@@ -1,0 +1,3 @@
+Client ID: 377770575064-serhm4gmvskpp9h2888sfrngenhsd99r.apps.googleusercontent.com
+
+Client Secret: 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
