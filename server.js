@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const { pool } = require('./config/dbConfig')
+const { pool, connectionString } = require('./config/dbConfig')
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const flash = require('express-flash');
@@ -62,7 +62,7 @@ passport.use(
 
 passport.serializeUser((user, done) => {
     done(null, user)
-})
+});
 
 passport.deserializeUser((user, done) => {
     done(null, user)
@@ -71,15 +71,30 @@ passport.deserializeUser((user, done) => {
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended: false}));
+
+const conObject = {
+    connectionString,
+    //ssl: { rejectUnauthorized: false }
+};
+
 app.use(session({
+    store: new (require('connect-pg-simple')(session))({
+        conObject,
+    }),
     secret: process.env.SESSION_SECRET,
-    resave: false,
     saveUninitialized: false,
+    resave: false,
+    cookie: { 
+        secure: false,
+        httpOnly: false,
+        sameSite: false,
+        maxAge: 30 * 24 * 60 * 60 * 1000
+     } // 30 days
+    // Insert express-session options here
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
-
 app.use(flash());
 
 const googleRouter = require('./routes/googleAuthRoutes');

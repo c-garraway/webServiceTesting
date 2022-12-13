@@ -21,7 +21,11 @@ usersRouter.get('/dashboard', checkNotAuthenticated, (req, res) => {
     });
 });
 
-usersRouter.get('/logout', (req, res) => {
+usersRouter.post('/logout', (req, res) => {
+    /* req.flash('success_msg', 'You have logged out');
+    req.session.destroy();
+    res.redirect('/users/login'); */
+
     req.logout(function(err) {
         if (err) { 
             return next(err); 
