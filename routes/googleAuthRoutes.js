@@ -28,7 +28,7 @@ googleRouter.get('/callback',
                 const googleUser = results.rows[0];
 
                 if(googleUser === undefined || googleUser === null ) {
-                    console.log('user is undefined')
+                    //console.log('user is undefined')
                     pool.query(
                         'INSERT INTO users (name, email, useroauthid) VALUES ($1, $2, $3)', [gUser.name, gUser.email, gUser.sub], (err, results) => {
                             if(err) {
@@ -41,7 +41,7 @@ googleRouter.get('/callback',
                     );
 
                 } else {
-                    console.log('user is in the database')
+                    //console.log('user is in the database')
                     res.redirect('/users/dashboard');
 
                 }

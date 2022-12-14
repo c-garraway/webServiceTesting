@@ -16,7 +16,7 @@ const authenticateLocalUser = (email, password, done) => {
             if (err) {
                 throw err;
             }
-            console.log(results.rows);
+            //console.log(results.rows);
 
             if(results.rows.length > 0) {
                 const user = results.rows[0];
@@ -88,8 +88,8 @@ app.use(session({
         secure: false,
         httpOnly: false,
         sameSite: false,
-        maxAge: 30 * 24 * 60 * 60 * 1000
-     } // 30 days
+        maxAge: 24 * 60 * 60 * 1000
+     } // 24 hours
     // Insert express-session options here
 }));
 
