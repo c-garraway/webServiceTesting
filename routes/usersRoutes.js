@@ -1,6 +1,8 @@
 const express = require('express');
 const passport = require('passport');
 const { checkAuthenticated, checkNotAuthenticated } = require('../utilities/utility')
+const bcrypt = require('bcrypt');
+const { pool } = require('../config/dbConfig')
 
 const usersRouter = express.Router();
 
@@ -37,12 +39,12 @@ usersRouter.post('/logout', (req, res) => {
 
 usersRouter.post('/register', async (req, res) => {
     let { name, email, password, password2 } = req.body;
-    console.log({
+    /* console.log({
         name,
         email,
         password,
         password2
-    });
+    }); */
 
     let errors = [];
 
@@ -64,7 +66,7 @@ usersRouter.post('/register', async (req, res) => {
         //Form validation has passed
 
         let hashedPassword = await bcrypt.hash(password, 10);
-        console.log(hashedPassword);
+        //console.log(hashedPassword);
 
         pool.query(
             'SELECT * FROM users WHERE email = $1', [email], 
@@ -73,7 +75,7 @@ usersRouter.post('/register', async (req, res) => {
                     throw err;
                 }
 
-                console.log(results.rows);
+                //console.log(results.rows);
 
                 if(results.rows.length > 0) {
                     errors.push({message: 'Email already registered'});
@@ -84,7 +86,7 @@ usersRouter.post('/register', async (req, res) => {
                             if(err) {
                                 throw err;
                             }
-                            console.log(results.rows);
+                            //console.log(results.rows);
                             req.flash('success_msg', 'You are now registered. Please log in.');
                             res.redirect('/users/login');
                         }
