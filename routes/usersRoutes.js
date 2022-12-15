@@ -2,7 +2,9 @@ const express = require('express');
 const passport = require('passport');
 const { checkAuthenticated, checkNotAuthenticated } = require('../utilities/utility')
 const bcrypt = require('bcrypt');
-const { pool } = require('../config/dbConfig')
+const { pool } = require('../config/dbConfig');
+require('dotenv').config();
+
 
 const usersRouter = express.Router();
 
@@ -99,8 +101,8 @@ usersRouter.post('/register', async (req, res) => {
 });
 
 usersRouter.post('/login', passport.authenticate('local', {
-    successRedirect: '/users/dashboard',
-    failureRedirect: '/users/login',
+    successRedirect: `${process.env.HOST_BASEURL}/users/dashboard`,
+    failureRedirect: `${process.env.HOST_BASEURL}/users/login`,
     failureFlash: true
 }));
 
