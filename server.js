@@ -7,6 +7,7 @@ const flash = require('express-flash');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
+const cors = require('cors');
 
 const PORT = process.env.EXPRESS_PORT || 4000;
 
@@ -96,6 +97,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+app.use(cors());
 
 const googleRouter = require('./routes/googleAuthRoutes');
 app.use('/google', googleRouter);
